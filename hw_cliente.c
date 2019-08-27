@@ -77,6 +77,12 @@ int main (int argc, char *argv[]) {
 				while(1){
 					//leitura do arquivo
 					scanf("%s", mensagem);
+
+					if(strcmp(mensagem, "/quit") == 0){
+						//printf("oi");
+						exit(1);
+					}
+
 					fileread = fopen(mensagem,"r");
 
 					if(fileread == NULL){
