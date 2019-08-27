@@ -32,6 +32,7 @@ int main (int argc, char *argv[]) {
 	CLIENT *cl;
 	//Quantidade mensagens recebidas até o momento
 	int numeroMensagem = 0;
+	char nome[20];
 	mensa *nm;
 	mensa bloco;
 	char nick[256];
@@ -101,10 +102,13 @@ int main (int argc, char *argv[]) {
 
 	    	}
     }else{
-
+				strcpy(nomeArquivo,nick);
+				strcat(nomeArquivo,".client");
         //Verifica novas mensagens no servidor
 				while(1){
+
 					nm = num_1(&numeroMensagem, cl);
+
 
 					if (nm == NULL) {
 						clnt_perror(cl,argv[1]);
@@ -113,27 +117,25 @@ int main (int argc, char *argv[]) {
 				//	printf("%d\n",nm->numero);
 					if(nm->numero != -1){
 
-						printf("%d:%s:%s\n", nm->numero, nm->nick, nm->mensagem);
+						printf("<%s> %s\n", nm->nick, nm->mensagem);
 						numeroMensagem = nm->numero;
 
 					}
+					printf("%s", nm->nick);
+
+					filewrite = fopen(nomeArquivo,"w");
+					int i;
+					for(i=0; nm->mensagem[i]; i++){
+						fputc(nm->mensagem[i],filewrite);
+					}
+
+					fclose(filewrite);
+
 					if(*queroEnviar == 1){
 						*queroReceber = 0;
 						while(*queroEnviar == 1){
 							//Ajuste técnico adaptativo para esperar o cliente
 	    				//enviar mensagem
-							strcpy(nomeArquivo, nm->nick);
-							strcat(nomeArquivo,".client");
-							int i;
-							//printf("%d:%s:%s\n", nm->numero, nm->nick, nm->mensagem);
-							//numeroMensagem = nm->numero;
-
-							filewrite = fopen(nomeArquivo,"w");
-							for(i=0; nm->mensagem[i]; i++){
-								fputc(nm->mensagem[i],filewrite);
-							}
-
-							fclose(filewrite);
 						}
 						*queroReceber = 1;
 					}
@@ -142,16 +144,3 @@ int main (int argc, char *argv[]) {
     }
 	return 0;
 }
-
-strcpy(nomeArquivo, nm->nick);
-strcat(nomeArquivo,".client");
-int i;
-printf("%d:%s:%s\n", nm->numero, nm->nick, nm->mensagem);
-numeroMensagem = nm->numero;
-
-filewrite = fopen(nomeArquivo,"w");
-for(i=0; nm->mensagem[i]; i++){
-	fputc(nm->mensagem[i],filewrite);
-}
-
-fclose(filewrite);
