@@ -16,7 +16,7 @@ Lista * lista;
 
 //Recebe o identificador da ultima mensagem e verifica se
 //existem mensagens novas
-mensa *num_1_svc(int *numMSG, struct svc_req *req){
+mensa *num_1_svc(int *numMSG,struct svc_req *req){
 	static mensa *mensagemBloco;
 	static mensa semMsg;
 
@@ -37,10 +37,11 @@ mensa *num_1_svc(int *numMSG, struct svc_req *req){
 		return mensagemBloco;
 
 	}
+
 	return mensagemBloco;
 }
 
-//Recebe mensagens dos clientes e coloca numa lista
+//Recebe mensagens dos clientes, coloca em uma lista e grava um novo arquivo.serv
 void *recebemsg_1_svc(mensa *bloco, struct svc_req *req){
 	FILE *filewrite;
 	int i;
