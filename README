@@ -1,42 +1,23 @@
-helloworld-RPC
-==============
+------ Dicas ------ AINDA NÃO FIZ ISSO
 
-A VERY simple rpc example to start with.
+O programa não aceita nomes de clientes repetidos.
+Para o cliente sair do programa digite /quit.
 
-master branch
--------------
-The RPC server returns the strings "Hello world" when called.
+------ Passo a Passo ------
 
-xdr branch
-----------
-Demostrate the use of xdr.
-The RPC server swap the a,b in struct AB, and return it back.
+1- No terminal 1 lance o servidor;
+  $make
+  $./servidor
 
-Usage
-=====
+2- No terminal 2 lance um cliente;
+  $./cliente host
 
-CMD
----
+3- No terminal 3 lance um cliente;
+  $./cliente host
 
-\> make
+------ Saídas ------
+Após lançar o cliente, informe um nickname para o cliente, em seguida você pode informar o arquivo que deverá ser lido e enviado para os demais clientes.
 
-\> rpcinfo
+------ Observações ------
 
-\> sudo ./server
-
-\> ./client localhost
-
-Output
----------------
-
-**master**:
-> Returned string=Hello world
-
-**XDR branch**:
-> Returned a=20,b=10
-
-Reference
-=========
-
-* http://people.cs.clemson.edu/~wayne/cpsc824/samples/simple_rpc/index.shtml
-* http://www.cs.cf.ac.uk/Dave/C/node34.html
+Onde indica "host" você deve escrever o host do servidor, por exemplo, localhost.
