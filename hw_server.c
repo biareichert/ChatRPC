@@ -44,10 +44,12 @@ void *recebemsg_1_svc(param *bloco, struct svc_req *req){
 	char nick[256];
 	char mensagem[256];
 	char nomeArquivo[20];
+	int num;
 
 	strcpy(nick, bloco->nick);
 	strcpy(mensagem, bloco->mensagem);
 	strcpy(nomeArquivo, nick);
+	num = bloco->idCliente;
 	//strcat(nomeArquivo, ".serv");
 
 	//Inicializa lista
@@ -61,7 +63,7 @@ void *recebemsg_1_svc(param *bloco, struct svc_req *req){
 	adicionar(numMensagem, nick, mensagem, lista);
 
 	//gravando arquivo .serv
-	sprintf (nomeArquivo, "-0%s.serv", numMensagem);
+	sprintf (nomeArquivo, "%s-0%d.serv",nick, num);
 	filewrite = fopen(nomeArquivo,"w");
 	for(i=0; mensagem[i]; i++){
 		fputc(mensagem[i],filewrite);
