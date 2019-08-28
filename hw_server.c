@@ -2,12 +2,6 @@
 #include "hw.h"
 #include "lista.c"
 
-/*
-   Servidor - Guarda as mensagens que vão chegando
-   dos clientes e envia conforme a solicitação
-   Aqui ficam as funções que são chamadas pelo cliente.
-*/
-
 //Quantidade de mensagens atualmente no servidor
 int numMensagem = 0;
 
@@ -45,6 +39,7 @@ mensa *num_1_svc(int *numMSG,struct svc_req *req){
 void *recebemsg_1_svc(mensa *bloco, struct svc_req *req){
 	FILE *filewrite;
 	int i;
+	printf("ola");
 
 	char nick[256];
 	char mensagem[256];
@@ -61,17 +56,15 @@ void *recebemsg_1_svc(mensa *bloco, struct svc_req *req){
 	}
 
 	numMensagem++;
-  //printf("%s:%s\n",bloco->nick, bloco->mensagem);
+
 	//Adiciona na lista
 	adicionar(numMensagem, nick, mensagem, lista);
 
-
-	//gravando arquivo .servidor
+	//gravando arquivo .serv
 	filewrite = fopen(nomeArquivo,"w");
 	for(i=0; mensagem[i]; i++){
 		fputc(mensagem[i],filewrite);
 	}
 
 	fclose(filewrite);
-
 }
