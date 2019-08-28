@@ -1,6 +1,4 @@
------- Dicas ------ AINDA NÃO FIZ ISSO
-
-O programa não aceita nomes de clientes repetidos.
+Autores: Beatriz e Geremias
 
 ------ Passo a Passo ------
 
@@ -27,4 +25,4 @@ Se você optar pela opção número 2, o sistema irá encerrar as operações pa
 
 ------ Observações ------
 
-Onde indica "host" você deve escrever o host do servidor, por exemplo, localhost.
+Onde indica "host" você deve escrever o host do servidor, por exemplo, localhost ou sdi0001 ou sdi0002.
