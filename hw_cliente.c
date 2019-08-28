@@ -75,7 +75,7 @@ int main (int argc, char *argv[]) {
 				//strcat(nomeArquivo,".client0");
 				//char *n = (char) bloco.idCliente;
 				//itoa(bloco.idCliente, n, 2);
-				strcat(nomeArquivo,n);
+			//	strcat(nomeArquivo,n);
 
 				nm = enviamsg_1(&numeroMensagem, cl);
 
@@ -88,7 +88,7 @@ int main (int argc, char *argv[]) {
 					printf("<%s> %s\n", nm->nick, nm->mensagem);
 					numeroMensagem = nm->numero;
 				}
-				sprintf (nomeArquivo, "%s.client0", nm->idCliente);
+				sprintf (nomeArquivo, "%s0%d.client0%d",nick, nm->numero, bloco.idCliente);
 				filewrite = fopen(nomeArquivo,"w");
 				int i;
 				for(i=0; nm->mensagem[i]; i++){
