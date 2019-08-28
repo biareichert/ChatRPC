@@ -1,7 +1,6 @@
 ------ Dicas ------ AINDA NÃO FIZ ISSO
 
 O programa não aceita nomes de clientes repetidos.
-Para o cliente sair do programa digite /quit.
 
 ------ Passo a Passo ------
 
@@ -16,7 +15,15 @@ Para o cliente sair do programa digite /quit.
   $./cliente host
 
 ------ Saídas ------
-Após lançar o cliente, informe um nickname para o cliente, em seguida você pode informar o arquivo que deverá ser lido e enviado para os demais clientes.
+Após lançar o cliente, informe um nickname para o mesmo.
+Em seguida você deve escolher entre as opções:
+  0- Enviar mensagem;
+  1- Apenas receber as mensagens;
+  2- Sair;
+
+Se você optar pela opção número 0, você deve informar o nome do arquivo que deverá ser lido e enviado.
+Se você optar pela opção número 1, aguarde enquanto o sistema imprime as mensagens guardadas.
+Se você optar pela opção número 2, o sistema irá encerrar as operações para aquele cliente.
 
 ------ Observações ------
 
