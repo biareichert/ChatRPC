@@ -9,30 +9,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-/*
-   Cliente -- Aciona funções do servidor
-   Envia e recebe mensagens
-
-*/
-
 int main (int argc, char *argv[]) {
-	//Variaveis compartilhadas
-	int * queroEnviar = mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
-	int * queroReceber = mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
 	FILE *filewrite, *fileread;
-
-	//Habilita o primeiro processo que fica verificando se
-	//existem novas mensagens
-	*queroReceber = 1;
-
-	//Nenhuma mensagem para enviar então o processo começa
-	//desabilitado
-	*queroEnviar = 0;
+	int stop = 0;
+	int opc;
 	CLIENT *cl;
-	//Quantidade mensagens recebidas até o momento
-	int numeroMensagem = 0;
+	int numeroMensagem = 0; //Quantidade mensagens recebidas até o momento
 	char nome[20];
+	char sair[10];
 	mensa *nm;
 	mensa bloco;
 	char nick[256];
@@ -40,6 +24,7 @@ int main (int argc, char *argv[]) {
 	char text[256]; //linha do arquivo
 	char texto[10000] = ""; //leitura do arquivo
 	char nomeArquivo[20];
+	int id = 0;
 
 	//Verifica se IP está configurado
 	if (argc != 2) {
@@ -54,99 +39,70 @@ int main (int argc, char *argv[]) {
 	}
 
 	//Obtem nick
-	printf("Coloque um nick:\n");
+	printf("Informe um nickname:\n");
 	fgets(nick, sizeof(nick), stdin);
 	strtok(nick, "\n");
-	printf("Oi %s\n", nick);
+	printf("Bem vindo %s!\n", nick);
 	strcpy(bloco.nick, nick);
+	bloco.idCliente = id++;
 
-	//Fork necessario para que um processo receba mensagens
-	// e o outro envie
-    pid_t pid;
+  while (stop != 2){
+		printf("Deseja mandar um arquivo?\n ");
+		printf("0- Sim\n");
+		printf("1- Apenas receber as mensagens\n");
+		printf("2- Sair\n");
+		scanf("%d",&opc);
 
-    if ((pid = fork()) < 0){
-        perror("fork");
-        exit(1);
-    }
-		//printf("passei aqui\n");
-
-    if (pid == 0){
-				printf("Informe o nome do arquivo:\n");
-				//printf("entrei aqui\n");
-        //Lê mensagens do teclado e envia para o servidor
-				while(1){
-					//leitura do arquivo
-					scanf("%s", mensagem);
-
-					if(strcmp(mensagem, "/quit") == 0){
-						//printf("oi");
-						exit(1);
-					}
-
-					fileread = fopen(mensagem,"r");
-
-					if(fileread == NULL){
-						printf("Erro ao abrir o arquivo %s.\n", mensagem);
-						break;
-					}
-					if(fileread){
-						while((fgets(text, sizeof(text),fileread)) != NULL){
-							strcat(texto,text);
-						}
-					}
-					//printf("%s\n",texto);
-
-					*queroEnviar = 1;
-	    		while(*queroReceber == 1){
-	    			//Ajuste técnico adaptativo para esperar o cliente
-	    			//enviar mensagem
-	    		}
-
-	    		strcpy(bloco.mensagem, texto);
-					recebemsg_1(&bloco,cl);
-					*queroEnviar = 0;
-
-	    	}
-    }else{
-				strcpy(nomeArquivo,nick);
-				strcat(nomeArquivo,".client");
-        //Verifica novas mensagens no servidor
-				while(1){
-
-					nm = num_1(&numeroMensagem, cl);
-
-
-					if (nm == NULL) {
-						clnt_perror(cl,argv[1]);
-						exit(1);
-					}
-				//	printf("%d\n",nm->numero);
-					if(nm->numero != -1){
-
-						printf("<%s> %s\n", nm->nick, nm->mensagem);
-						numeroMensagem = nm->numero;
-
-					}
-					printf("%s", nm->nick);
-
-					filewrite = fopen(nomeArquivo,"w");
-					int i;
-					for(i=0; nm->mensagem[i]; i++){
-						fputc(nm->mensagem[i],filewrite);
-					}
-
-					fclose(filewrite);
-
-					if(*queroEnviar == 1){
-						*queroReceber = 0;
-						while(*queroEnviar == 1){
-							//Ajuste técnico adaptativo para esperar o cliente
-	    				//enviar mensagem
-						}
-						*queroReceber = 1;
-					}
-
+		switch(opc){
+			case 0:
+				printf("Informe o nome do arquivo.\n");
+				scanf("%s", mensagem);
+				fileread = fopen(mensagem,"r");
+				if(fileread == NULL){
+					printf("Erro ao abrir o arquivo %s.\n", mensagem);
+					break;
 				}
-    }
+				if(fileread){
+					while((fgets(text, sizeof(text),fileread)) != NULL){
+						strcat(texto,text);
+					}
+				}
+				strcpy(bloco.mensagem, texto);
+				recebemsg_1(&bloco,cl);
+				break;
+			case 1:
+				strcpy(nomeArquivo,nick);
+				strcat(nomeArquivo,".client0");
+				char *n = (char) bloco.idCliente;
+				//itoa(bloco.idCliente, n, 2);
+				strcat(nomeArquivo,n);
+
+				nm = num_1(&numeroMensagem, cl);
+
+				if (nm == NULL) {
+					clnt_perror(cl,argv[1]);
+					exit(1);
+				}
+
+				if(nm->numero != -1){
+					printf("<%s> %s\n", nm->nick, nm->mensagem);
+					numeroMensagem = nm->numero;
+				}
+
+				filewrite = fopen(nomeArquivo,"w");
+				int i;
+				for(i=0; nm->mensagem[i]; i++){
+					fputc(nm->mensagem[i],filewrite);
+				}
+
+				fclose(filewrite);
+
+			  break;
+
+			case 2:
+				stop = 2;
+				break;
+		}
+  }
 	return 0;
 }
