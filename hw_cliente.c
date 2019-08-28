@@ -17,8 +17,8 @@ int main (int argc, char *argv[]) {
 	int numeroMensagem = 0; //Quantidade mensagens recebidas até o momento
 	char nome[20];
 	char sair[10];
-	mensa *nm;
-	mensa bloco;
+	param *nm;
+	param bloco;
 	char nick[256];
 	char mensagem[50]; //nome do arquivo
 	char text[256]; //linha do arquivo
@@ -32,7 +32,7 @@ int main (int argc, char *argv[]) {
 		exit(1);
 	}
 
-	cl = clnt_create(argv[1], HELLO_WORLD_PROG, HELLO_WOLRD_VERS, "tcp");
+	cl = clnt_create(argv[1], PROG, VERS, "tcp");
 	if (cl == NULL) {
 		clnt_pcreateerror(argv[1]);
 		exit(1);
@@ -72,12 +72,12 @@ int main (int argc, char *argv[]) {
 				break;
 			case 1:
 				strcpy(nomeArquivo,nick);
-				strcat(nomeArquivo,".client0");
-				char *n = (char) bloco.idCliente;
+				//strcat(nomeArquivo,".client0");
+				//char *n = (char) bloco.idCliente;
 				//itoa(bloco.idCliente, n, 2);
 				strcat(nomeArquivo,n);
 
-				nm = num_1(&numeroMensagem, cl);
+				nm = enviamsg_1(&numeroMensagem, cl);
 
 				if (nm == NULL) {
 					clnt_perror(cl,argv[1]);
@@ -88,7 +88,7 @@ int main (int argc, char *argv[]) {
 					printf("<%s> %s\n", nm->nick, nm->mensagem);
 					numeroMensagem = nm->numero;
 				}
-
+				sprintf (nomeArquivo, "%s.client0", nm->idCliente);
 				filewrite = fopen(nomeArquivo,"w");
 				int i;
 				for(i=0; nm->mensagem[i]; i++){
