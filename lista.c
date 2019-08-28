@@ -20,15 +20,15 @@ Lista * listavazia(){
 
 //Procura por nova mensagem na lista e retorna uma struct com
 //a mensagem, nick do remetente e número atual da mensagem
-mensa * pegaMSG(Lista * lista, int numeroCli) {
+param * pegaMSG(Lista * lista, int numeroCli) {
    No * noAtual = lista->cabeca;
-   mensa *bloco;
+   param *bloco;
    int numero = numeroCli+1;
    if(lista->cabeca == NULL || numero == 0){
       bloco->numero = -1;
       return bloco;
-   } 
-   //Procura mensagem  
+   }
+   //Procura mensagem
    while(noAtual->proximo != NULL && noAtual->numero < numero){
       noAtual = noAtual->proximo;
    }
@@ -51,7 +51,7 @@ void adicionar(int numero, char *nick, char *mensagem, Lista * lista){
      lista->cabeca = criano(numero, nick, mensagem);
    }
    else {
-     noAtual = lista->cabeca; 
+     noAtual = lista->cabeca;
      while (noAtual->proximo!=NULL){
           noAtual = noAtual->proximo;
      }
