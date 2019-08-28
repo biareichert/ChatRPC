@@ -10,9 +10,9 @@ Lista * lista;
 
 //Recebe o identificador da ultima mensagem e verifica se
 //existem mensagens novas
-mensa *num_1_svc(int *numMSG,struct svc_req *req){
-	static mensa *mensagemBloco;
-	static mensa semMsg;
+param *enviamsg_1_svc(int *numMSG,struct svc_req *req){
+	static param *mensagemBloco;
+	static param semMsg;
 
 	//Se não existem novas mensagens avisa o cliente
 	if(numMensagem == 0 || *numMSG == numMensagem){
@@ -36,7 +36,7 @@ mensa *num_1_svc(int *numMSG,struct svc_req *req){
 }
 
 //Recebe mensagens dos clientes, coloca em uma lista e grava um novo arquivo.serv
-void *recebemsg_1_svc(mensa *bloco, struct svc_req *req){
+void *recebemsg_1_svc(param *bloco, struct svc_req *req){
 	FILE *filewrite;
 	int i;
 	printf("ola");
@@ -48,7 +48,7 @@ void *recebemsg_1_svc(mensa *bloco, struct svc_req *req){
 	strcpy(nick, bloco->nick);
 	strcpy(mensagem, bloco->mensagem);
 	strcpy(nomeArquivo, nick);
-	strcat(nomeArquivo, ".serv");
+	//strcat(nomeArquivo, ".serv");
 
 	//Inicializa lista
 	if(lista == NULL){
@@ -61,6 +61,7 @@ void *recebemsg_1_svc(mensa *bloco, struct svc_req *req){
 	adicionar(numMensagem, nick, mensagem, lista);
 
 	//gravando arquivo .serv
+	sprintf (nomeArquivo, "-0%s.serv", numMensagem);
 	filewrite = fopen(nomeArquivo,"w");
 	for(i=0; mensagem[i]; i++){
 		fputc(mensagem[i],filewrite);
