@@ -1,8 +1,8 @@
-
 struct mensa{
 	int numero;
 	char nick[256];
 	char mensagem[256];
+	int idCliente;
 };
 
 program HELLO_WORLD_PROG {
