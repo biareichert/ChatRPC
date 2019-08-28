@@ -26,3 +26,4 @@ Se você optar pela opção número 2, o sistema irá encerrar as operações pa
 ------ Observações ------
 
 Onde indica "host" você deve escrever o host do servidor, por exemplo, localhost ou sdi0001 ou sdi0002.
+Se vocẽ optar pela opção número 0, o programa demora um pouco para executar, por favor, aguarde aparecer o menu novamente.
