@@ -13,6 +13,7 @@ Lista * lista;
 param *enviamsg_1_svc(int *numMSG,struct svc_req *req){
 	static param *mensagemBloco;
 	static param semMsg;
+	//int num = *numMSG;
 
 	//Se não existem novas mensagens avisa o cliente
 	if(numMensagem == 0 || *numMSG == numMensagem){
@@ -26,10 +27,10 @@ param *enviamsg_1_svc(int *numMSG,struct svc_req *req){
 	}
 
 	//Com novas mensagens pega a mensagem mais antiga entre as novas
-	if(*numMSG < numMensagem){
-		mensagemBloco = pegaMSG(lista, *numMSG);
-		return mensagemBloco;
 
+	if(*numMSG < numMensagem){
+			mensagemBloco = pegaMSG(lista, *numMSG);
+			return mensagemBloco;
 	}
 
 	return mensagemBloco;
@@ -39,7 +40,6 @@ param *enviamsg_1_svc(int *numMSG,struct svc_req *req){
 void *recebemsg_1_svc(param *bloco, struct svc_req *req){
 	FILE *filewrite;
 	int i;
-	printf("ola");
 
 	char nick[256];
 	char mensagem[256];
@@ -50,7 +50,6 @@ void *recebemsg_1_svc(param *bloco, struct svc_req *req){
 	strcpy(mensagem, bloco->mensagem);
 	strcpy(nomeArquivo, nick);
 	num = bloco->idCliente;
-	//strcat(nomeArquivo, ".serv");
 
 	//Inicializa lista
 	if(lista == NULL){
