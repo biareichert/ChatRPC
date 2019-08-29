@@ -12,7 +12,7 @@
 int main (int argc, char *argv[]) {
 	FILE *filewrite, *fileread;
 	int stop = 0;
-	int opc;
+	int opc, n;
 	CLIENT *cl;
 	int numeroMensagem = 0; //Quantidade mensagens recebidas até o momento
 	char nome[20];
@@ -47,7 +47,7 @@ int main (int argc, char *argv[]) {
 	bloco.idCliente = id++;
 
   while (stop != 2){
-		printf("Deseja mandar um arquivo?\n ");
+		printf("Deseja mandar um arquivo?\n");
 		printf("0- Sim\n");
 		printf("1- Apenas receber as mensagens\n");
 		printf("2- Sair\n");
@@ -72,28 +72,37 @@ int main (int argc, char *argv[]) {
 				break;
 			case 1:
 				strcpy(nomeArquivo,nick);
-				//strcat(nomeArquivo,".client0");
-				//char *n = (char) bloco.idCliente;
-				//itoa(bloco.idCliente, n, 2);
-			//	strcat(nomeArquivo,n);
 
-				nm = enviamsg_1(&numeroMensagem, cl);
+				while(1){
 
-				if (nm == NULL) {
-					clnt_perror(cl,argv[1]);
-					exit(1);
-				}
+					nm = enviamsg_1(&numeroMensagem, cl);
+					if (nm == NULL) {
+						clnt_perror(cl,argv[1]);
+						exit(1);
+					}
 
-				if(nm->numero != -1){
-					printf("<%s> %s\n", nm->nick, nm->mensagem);
-					numeroMensagem = nm->numero;
-				}
-				sprintf (nomeArquivo, "%s0%d.client0%d",nick, nm->numero, bloco.idCliente);
-				filewrite = fopen(nomeArquivo,"w");
-				int i;
-				for(i=0; nm->mensagem[i]; i++){
-					fputc(nm->mensagem[i],filewrite);
-				}
+					if(nm->numero != -1){
+						printf("\n<%s> %s\n", nm->nick, nm->mensagem);
+						numeroMensagem = nm->numero;
+						sprintf (nomeArquivo, "%s0%d.client0%d",nick, nm->numero, bloco.idCliente);
+						filewrite = fopen(nomeArquivo,"w");
+						int i;
+						for(i=0; nm->mensagem[i]; i++){
+							fputc(nm->mensagem[i],filewrite);
+						}
+					}else{
+						printf("\nSem mais mensagens.\n" );
+						printf("0- Para voltar ao menu.\n");
+						printf("1- Para continuar a receber mensagens.\n");
+						scanf("%d",&n);
+						if(n == 0){
+							break;
+						}else{
+							continue;
+						}
+					}
+
+			  }
 
 				fclose(filewrite);
 
